@@ -1,16 +1,9 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Brixel.Soundboard.API.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 
 namespace Brixel.Soundboard.API
 {
@@ -26,10 +19,10 @@ namespace Brixel.Soundboard.API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddCors();
             services.AddControllers();
             services.Configure<MqttOptions>(Configuration.GetSection(nameof(MqttOptions)));
             services.AddScoped<IMqttClientService, MqttClientService>();
-            
             services.AddSwaggerGen();
         }
 
@@ -41,16 +34,22 @@ namespace Brixel.Soundboard.API
                 app.UseDeveloperExceptionPage();
             }
 
+
+            app.UseCors(policy => 
+                policy
+                    .AllowAnyOrigin()
+                    .AllowAnyMethod()
+                    .AllowAnyHeader());
+
             app.UseHttpsRedirection();
 
             app.UseSwagger();
             app.UseSwaggerUI((options) =>
             {
-                options.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
+                options.SwaggerEndpoint("/swagger/v1/swagger.json", "Soundboard.API");
             });
 
             app.UseRouting();
-
 
             app.UseAuthorization();
 

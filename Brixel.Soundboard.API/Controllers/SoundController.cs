@@ -22,15 +22,13 @@ namespace Brixel.Soundboard.API.Controllers
         }
 
         [HttpPost("play")]
-        public async Task Play([FromForm]IFormFileCollection formFileCollection)
+        public async Task Play([FromForm] IFormFile file)
         {
-            var singleFile = formFileCollection.Single();
             var memoryStream = new MemoryStream();
             await using (memoryStream)
             {
-                await singleFile.CopyToAsync(memoryStream);
+                await file.CopyToAsync(memoryStream);
             }
-
             await _mqttClientService.Publish(memoryStream);
         }
 

@@ -1,11 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.30204.135
+# Visual Studio Version 17
+VisualStudioVersion = 17.1.32210.238
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Brixel.Soundboard.Web", "Brixel.Soundboard.Web\Brixel.Soundboard.Web.csproj", "{384DD769-750B-49C6-A46F-9F0ABB202C93}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Brixel.Soundboard.API", "Brixel.Soundboard.API\Brixel.Soundboard.API.csproj", "{40DF6A09-5ADC-43EA-B982-85996EAE3E28}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Brixel.Soundboard.Client", "Brixel.Soundboard.Client\Brixel.Soundboard.Client.csproj", "{0A957FC1-C0C3-44F0-A44B-A05CE802CC7A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{40DF6A09-5ADC-43EA-B982-85996EAE3E28}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{40DF6A09-5ADC-43EA-B982-85996EAE3E28}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{40DF6A09-5ADC-43EA-B982-85996EAE3E28}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0A957FC1-C0C3-44F0-A44B-A05CE802CC7A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0A957FC1-C0C3-44F0-A44B-A05CE802CC7A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0A957FC1-C0C3-44F0-A44B-A05CE802CC7A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0A957FC1-C0C3-44F0-A44B-A05CE802CC7A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

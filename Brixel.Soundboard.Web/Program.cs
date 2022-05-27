@@ -19,7 +19,9 @@ namespace Brixel.Soundboard.Web
             var builder = WebAssemblyHostBuilder.CreateDefault(args);
             builder.RootComponents.Add<App>("app");
 
-            builder.Services.AddTransient(sp => new HttpClient { BaseAddress = new Uri("https://localhost:5001") });
+            var baseAddress = builder.Configuration["baseAddress"];
+
+            builder.Services.AddTransient(sp => new HttpClient { BaseAddress = new Uri(baseAddress) });
             builder.Services.AddTransient<ISoundboardProxy, SoundboardProxy>();
             builder.Services.AddFileReaderService(o => o.UseWasmSharedBuffer = true);
             await builder.Build().RunAsync();

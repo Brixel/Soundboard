@@ -12,5 +12,7 @@ namespace Brixel.Soundboard.Client.Services
         IMqttApplicationMessageReceivedHandler
     {
         Task Publish(MemoryStream memoryStream);
+
+        Task Subscribe();
     }
 }

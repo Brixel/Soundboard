@@ -12,6 +12,10 @@
 
     public class Player
     {
+        public Player()
+        {
+            Effects = new List<SoundEffect>();
+        }
         public List<SoundEffect> Effects { get; set; }
     }
 

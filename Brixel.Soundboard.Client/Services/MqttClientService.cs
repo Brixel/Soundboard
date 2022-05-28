@@ -1,19 +1,12 @@
-﻿using System;
-using System.Diagnostics;
-using System.IO;
+﻿using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Text;
-using System.Threading.Tasks;
-using LibVLCSharp.Shared;
-using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using MQTTnet;
 using MQTTnet.Client;
 using MQTTnet.Client.Connecting;
 using MQTTnet.Client.Disconnecting;
 using MQTTnet.Client.Options;
-using NAudio;
-using NAudio.Wave;
 
 namespace Brixel.Soundboard.Client.Services
 {
@@ -26,13 +19,13 @@ namespace Brixel.Soundboard.Client.Services
         private readonly string _topic;
         private readonly Player _player;
 
-        public MqttClientService(MqttOptions mqttOptions, Player player)
+        public MqttClientService(IOptions<MqttOptions> mqttOptions, IOptions<Player> player)
         {
             //_logger = logger;
-            var mqtt = mqttOptions;
+            var mqtt = mqttOptions.Value;
             _topic = mqtt.Topic;
 
-            _player = player;
+            _player = player.Value;
 
             CreateMqttClient(mqtt);
 
@@ -61,7 +54,6 @@ namespace Brixel.Soundboard.Client.Services
                 byte[]? payload = msg?.ApplicationMessage?.Payload ?? Array.Empty<byte>();
                 var text = Encoding.UTF8.GetString(payload);
                 ProcessPayload(text);
-                Console.Write(text);
             });
 
             var mqttSubscribeOptions = _factory.CreateSubscribeOptionsBuilder()
@@ -74,30 +66,31 @@ namespace Brixel.Soundboard.Client.Services
 
         private void ProcessPayload(string payload)
         {
+            Console.WriteLine($"Processing {payload}");
             string program = "vlc.exe";
 
             if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
                 program = "cvlc";
 
-            var path = _player.Effects.SingleOrDefault(x => x.Effect == payload)?.File;
+            var effect = _player.Effects.SingleOrDefault(x => x.Effect == payload);
 
-            if(path == null)
+            if(effect == null)
             {
                 Console.WriteLine($"No file found for effect {payload}");
                 return;
             }
-
-            var pi = new ProcessStartInfo(path)
+            Console.WriteLine($"Sending {effect.File} to VLC to play {effect.Effect}");
+            var pi = new ProcessStartInfo(effect.File)
             {
-                Arguments = Path.GetFileName(path) + " --play-and-exit",
+                Arguments = Path.GetFileName(effect.File) + " --play-and-exit",
                 UseShellExecute = true,
-                WorkingDirectory = Path.GetDirectoryName(path),
+                WorkingDirectory = Path.GetDirectoryName(effect.File),
                 FileName = program,
                 Verb = "OPEN",
                 WindowStyle = ProcessWindowStyle.Hidden
             };
 
-            Process p = new Process();
+            Process p = new();
             p.StartInfo = pi;
             p.Start();
             p.WaitForExit();
